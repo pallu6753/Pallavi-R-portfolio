@@ -1,0 +1,2447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pallavi R | Portfolio</title>
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Portfolio General Styling */
+        :root {
+            --primary-blue: #00bcd4;
+            --light-blue: #4dd0e1;
+            --dark-bg-1: #1a1a1a;
+            --dark-bg-2: #2a2a2a;
+            --text-light: #e0e0e0;
+            --text-gray: #a0e0e0;
+            --gradient-start-dark: #1f2937; /* A darker blue-gray for gradients */
+            --gradient-end-dark: #374151;   /* A lighter blue-gray for gradients */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #0A0A0A; /* Deep dark background */
+            color: var(--text-light); /* Light gray text for contrast */
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg-2); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-blue); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--light-blue); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-up {
+            opacity: 0.01;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-up.animated { animation: fadeInUp 0.8s ease-out forwards; }
+
+        /* Styles for Project Cards (now button-like, no shadows) */
+        .project-card {
+            transition: all 0.3s ease-in-out;
+            background-image: linear-gradient(to bottom right, var(--gradient-start-dark), var(--gradient-end-dark));
+            border-radius: 1rem; /* rounded-xl */
+            border: 1px solid rgba(0,188,212,0.3); /* Subtle border for definition */
+            padding: 2rem; /* Increased padding */
+        }
+        .project-card:hover {
+            transform: translateY(-3px); /* Lift effect */
+            border-color: var(--primary-blue);
+            box-shadow: 0 5px 15px rgba(0,188,212,0.2); /* Subtle hover shadow */
+        }
+
+        /* Styles for Skill Cards (now button-like, no shadows) */
+        .skill-card {
+            transition: all 0.3s ease-in-out;
+            background-image: linear-gradient(to bottom right, var(--gradient-start-dark), var(--gradient-end-dark));
+            border-radius: 1rem; /* rounded-xl */
+            border: 1px solid rgba(0,188,212,0.3); /* Subtle border for definition */
+            padding: 2rem; /* Increased padding */
+        }
+        .skill-card:hover {
+            transform: translateY(-3px); /* Lift effect */
+            border-color: var(--primary-blue);
+            box-shadow: 0 5px 15px rgba(0,188,212,0.2); /* Subtle hover shadow */
+        }
+
+        /* Styles for Certificate Cards (no shadows) */
+        .certificate-card {
+            transition: all 0.3s ease-in-out;
+            background-color: #1a1a1a; /* Keep a dark background for certificates */
+            border-radius: 1rem; /* rounded-xl */
+            border: 1px solid rgba(139, 92, 246, 0.3); /* Subtle purple border */
+            padding: 1.5rem; /* Slightly less padding than skills/projects */
+        }
+        .certificate-card:hover {
+            transform: translateY(-3px); /* Lift effect */
+            border-color: #8B5CF6; /* Purple border on hover */
+            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.2); /* Subtle purple hover shadow */
+        }
+
+        #screenOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: black; opacity: 0; pointer-events: none;
+            transition: opacity 0.5s ease-out; z-index: 99;
+        }
+        #projects::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(0,188,212,0.1) 0%, transparent 70%),
+                        linear-gradient(45deg, rgba(26, 26, 26, 0.5) 0%, rgba(10, 10, 10, 0.5) 100%);
+            background-size: 200% 200%; animation: moveBackground 30s linear infinite alternate;
+            z-index: -1; opacity: 0.6;
+        }
+        @keyframes moveBackground { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .typing-effect::after { content: '|'; display: inline-block; animation: blink 0.7s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Styles for the image container in the "About Me" section - NO SHADOWS */
+        .about-image-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            background-color: var(--dark-bg-1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease-in-out;
+            aspect-ratio: 1 / 1;
+            max-width: 550px;
+            max-height: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(0,188,212,0.3); /* Subtle border for definition */
+        }
+        .about-image-container:hover {
+            transform: scale(1.02);
+            border-color: var(--primary-blue);
+        }
+        .about-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .hero-spline-container {
+            position: relative; width: 100%; padding-bottom: 120%; height: 0; overflow: hidden;
+            border-radius: 0.75rem; background-color: var(--dark-bg-1); display: flex;
+            justify-content: center; align-items: center;
+            transition: all 0.3s ease-in-out;
+            border: 1px solid rgba(0,188,212,0.3); /* Subtle border */
+        }
+        .hero-spline-container:hover {
+            transform: scale(1.02);
+            border-color: var(--primary-blue);
+        }
+        .hero-spline-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        .loader {
+            border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-blue);
+            border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite;
+            display: inline-block; vertical-align: middle; margin-left: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .attractive-button {
+            background-image: linear-gradient(to right, var(--primary-blue) 0%, var(--light-blue) 100%);
+            transition: all 0.3s ease-in-out; box-shadow: 0 5px 15px rgba(0,188,212,0.4); border: none;
+            position: relative; overflow: hidden; z-index: 1;
+        }
+        .attractive-button:hover {
+            background-image: linear-gradient(to left, var(--primary-blue) 0%, var(--light-blue) 100%);
+            box-shadow: 0 8px 20px rgba(0,188,212,0.6); transform: translateY(-2px);
+        }
+        .attractive-button::before {
+            content: ''; position: absolute; top: 50%; left: 50%; width: 300%; height: 300%;
+            background: rgba(255, 255, 255, 0.1); border-radius: 50%; transition: all 0.4s ease-in-out;
+            transform: translate(-50%, -50%) scale(0); z-index: -1;
+        }
+        .attractive-button:hover::before { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+
+        /* Canvas for Digital Rain Effect - ONLY FOR HERO SECTION */
+        #digitalRainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        /* Canvas for C-Code Digital Rain in About Me section */
+        #cCodeRainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind content of #about */
+            opacity: 0.2; /* Slightly less opaque to distinguish */
+        }
+        /* Canvas for Symbols Rain in Projects/Internships section */
+        #symbolsRainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind content of #experience */
+            opacity: 0.15; /* Even less opaque, very subtle */
+        }
+        /* Canvas for Skills - now C Code Rain */
+        #dataNodesCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15; /* Subtle */
+        }
+        /* Canvas for Certificates - now R Code Rain */
+        #sparklingDataCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1; /* Subtle */
+        }
+        /* Canvas for AI Tools - now Hacker Code Stream */
+        #hackerCodeCanvas { /* Renamed from animatedGridCanvas */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.25; /* Slightly more visible for hacker theme */
+            pointer-events: none; /* Ensure it doesn't block interactions */
+        }
+        /* Canvas for Quiz */
+        #quizCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1; /* Subtle effect */
+        }
+        /* Canvas for Contact Section - now C Program Code Rain */
+        #galaxyStarsCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Behind content of #contact */
+            opacity: 0.2; /* Subtle effect */
+            transition: opacity 0.5s ease-in-out;
+        }
+        /* Contact section brightness effect - retained for coding background */
+        #contact.brighten #galaxyStarsCanvas {
+            opacity: 0.8; /* Brighten the canvas effect on interaction */
+        }
+
+
+        /* Ensure all content sections are above the canvas background in hero */
+        section {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(10, 10, 10, 0.9);
+        }
+        /* Specific background for the hero section (which contains the canvas) */
+        #home {
+            background-color: #0A0A0A;
+            position: relative;
+        }
+        /* Specific background for the About Me section (which contains the canvas) */
+        #about-me { /* Updated ID */
+            background-color: #0A0A0A; /* Or whatever dark background you prefer for this section */
+            position: relative;
+        }
+        /* Specific background for the Projects section (which contains the canvas) */
+        #projects { /* Updated ID */
+            background-color: #0A0A0A; /* Or whatever dark background you prefer for this section */
+            position: relative;
+        }
+        /* Specific background for the Skills section (which contains the canvas) */
+        #skills {
+            background-color: #0A0A0A;
+            position: relative;
+        }
+        /* Specific background for the Certificates section (which contains the canvas) */
+        #certificates {
+            background-color: #0A0A0A;
+            position: relative;
+        }
+        /* Specific background for the AI Tools section (which contains the canvas) */
+        #ai-tools {
+            background-color: #0A0A0A;
+            position: relative;
+        }
+        /* Specific background for the Contact section (which contains the canvas) */
+        #contact {
+            background-color: #0A0A0A;
+            position: relative;
+            transition: background-color 0.5s ease-in-out; /* Smooth transition for background */
+        }
+        #contact.brighten {
+            background-color: #1c2b2e; /* A slightly brighter, cool blue dark tone */
+            box-shadow: 0 0 30px rgba(0,188,212,0.8), 0 0 60px rgba(0,188,212,0.4);
+        }
+        /* Remove the pythonCodeRainCanvas if galaxyStarsCanvas is used for contact */
+        #contact #pythonCodeRainCanvas {
+            display: none; /* Hide the python code rain canvas for contact section */
+        }
+
+        /* Specific background for the Quiz section (which contains the canvas) */
+        #quiz-demo {
+            background-color: #0A0A0A;
+            position: relative;
+        }
+
+        footer {
+            position: relative;
+            z-index: 1;
+            background-color: rgba(42, 42, 42, 0.9);
+        }
+
+        /* Navigation also needs to be above the canvas */
+        nav {
+            z-index: 100;
+        }
+        .chat-message {
+            background-color: #333;
+            padding: 8px 12px;
+            border-radius: 15px;
+            margin-bottom: 8px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .chat-message.user {
+            background-color: #00bcd4;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .chat-message.ai {
+            background-color: #555;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+
+        /* --- Form Specific Styling within Tool Card --- */
+        .form-input, .form-select, .form-textarea {
+            background-color: #2A2A2A; /* Darker input fields */
+            color: #E0E0E0;
+            border: 1px solid #4A4A4A; /* Subtle border for inputs */
+            padding: 0.8rem 1rem;
+            border-radius: 0.6rem; /* Slightly rounded inputs */
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #00BCD4; /* Highlight border on focus */
+            box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.4); /* Glow effect on focus */
+        }
+
+        .submit-button-form { /* Specific for the form within the tool card */
+            background-image: linear-gradient(to right, #6d28d9 0%, #8b5cf6 100%); /* Purple gradient for distinction */
+            color: white;
+            padding: 0.75rem 2rem; /* Slightly smaller padding to fit card */
+            border-radius: 0.5rem; /* Slightly less rounded */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(109, 40, 217, 0.4); /* Purple shadow */
+            border: none;
+            font-size: 1rem; /* Smaller font size */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .submit-button-form:hover {
+            background-image: linear-gradient(to left, #6d28d9 0%, #8b5cf6 100%);
+            box-shadow: 0 8px 20px rgba(109, 40, 217, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .submit-button-form::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: all 0.4s ease-in-out;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: -1;
+        }
+
+        .submit-button-form:hover::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+        }
+
+        /* Message Box Styling */
+        .message-box-form { /* Specific for the form's message box */
+            background-color: #3A3A3A;
+            color: #E0E0E0;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #6d28d9; /* Purple border */
+            margin-top: 1rem; /* Slightly less margin */
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+            font-size: 0.9rem; /* Smaller font size for feedback */
+        }
+        .message-box-form.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Styling for the Registration List */
+        .registration-list-container {
+            margin-top: 1.5rem;
+            background-color: #1a1a1a; /* Dark background */
+            border-radius: 0.75rem;
+            padding: 1rem;
+            border: 1px solid #4A4A4A;
+            max-height: 300px; /* Limit height to enable scrolling */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .registration-item {
+            background-color: #2a2a2a;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            text-align: left;
+            border: 1px solid #3a3a3a;
+        }
+        .registration-item:last-child {
+            margin-bottom: 0;
+        }
+        .registration-item p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .registration-item strong {
+            color: #00bcd4; /* Cyan for labels */
+        }
+        .registration-item .item-value {
+            color: #e0e0e0;
+        }
+
+        /* Specific styling for the Contact Form's message box */
+        #contactMessageBox {
+            background-color: #3A3A3A;
+            color: #E0E0E0;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--primary-blue); /* Use primary blue for contact */
+            margin-top: 1.5rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        #contactMessageBox.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Styles for the Quiz Module */
+        .quiz-container {
+            background-color: #2a2a2a; /* Slightly lighter dark background for the container */
+            border-radius: 1rem; /* rounded-xl */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            margin-left: auto; /* Center the quiz container */
+            margin-right: auto; /* Center the quiz container */
+        }
+
+        .option-button {
+            background-color: #3a3a3a; /* Darker button background */
+            color: #e0e0e0;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            margin-bottom: 0.75rem;
+            width: 100%;
+            text-align: left;
+            border: 1px solid transparent;
+        }
+
+        .option-button:hover {
+            background-color: #4a4a4a; /* Lighter on hover */
+            transform: translateY(-2px);
+        }
+
+        .option-button.selected {
+            background-color: #00bcd4; /* Primary blue for selected */
+            border-color: #00bcd4;
+            color: white;
+        }
+
+        .feedback-correct {
+            color: #4CAF50; /* Green for correct */
+            font-weight: bold;
+        }
+
+        .feedback-incorrect {
+            color: #f44336; /* Red for incorrect */
+            font-weight: bold;
+        }
+
+        .submit-button-quiz { /* Specific for the quiz submit button */
+            background-image: linear-gradient(to right, #00bcd4 0%, #4dd0e1 100%); /* Blue gradient */
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,188,212,0.4);
+            border: none;
+            display: inline-block; /* Ensure it respects margin auto for centering */
+            margin-top: 2rem; /* Add some space above */
+        }
+
+        .submit-button-quiz:hover {
+            background-image: linear-gradient(to left, #00bcd4 0%, #4dd0e1 100%);
+            box-shadow: 0 8px 20px rgba(0,188,212,0.6);
+            transform: translateY(-2px);
+        }
+
+        .result-section {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #333;
+            border-radius: 0.5rem;
+        }
+
+        .restart-button {
+            background-color: #555;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .restart-button:hover {
+            background-color: #666;
+        }
+
+        /* Custom Message Box for Image Clicks (instead of alert) */
+        #imageClickMessageBox {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(30, 30, 30, 0.95);
+            color: #E0E0E0;
+            padding: 1.5rem 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.6);
+            border: 2px solid var(--primary-blue);
+            text-align: center;
+            font-size: 1.25rem;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
+        #imageClickMessageBox.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* NEW: Full-screen Image Modal Styling */
+        .fullscreen-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); /* Dark semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* High z-index to appear above everything */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+            -webkit-backdrop-filter: blur(5px); /* Safari 9+ and iOS 9+ support */
+            backdrop-filter: blur(5px); /* Optional: blur background content */
+        }
+
+        .fullscreen-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fullscreen-modal-content {
+            position: relative;
+            max-width: 90vw; /* Adjust max width as needed */
+            max-height: 90vh; /* Adjust max height as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen-modal-content img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Ensure the full image is visible */
+            border-radius: 0.5rem;
+            box-shadow: 0 0 20px rgba(0,188,212,0.7); /* Glow around the image */
+        }
+
+        .fullscreen-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 0.2rem 0.8rem;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001; /* Above the image */
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .fullscreen-modal-close:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        /* Certificate image container for 18:9 aspect ratio */
+        .certificate-image-container {
+            width: 100%;
+            /* Maintain an 18:9 aspect ratio */
+            aspect-ratio: 18 / 9;
+            overflow: hidden; /* Hide anything outside the ratio */
+            display: flex; /* For centering the image if it doesn't fill */
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.5rem; /* Match card border-radius */
+            margin-bottom: 1rem;
+            cursor: pointer; /* Indicate clickability */
+            background-color: #1a1a1a; /* Placeholder background for empty space */
+            transition: all 0.3s ease-in-out;
+        }
+
+        .certificate-image-container:hover {
+            transform: scale(1.03); /* Subtle scale on hover for the container */
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5); /* Purple glow for certificates */
+        }
+
+        .certificate-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the whole image is visible within the container */
+            border-radius: 0.5rem; /* Match container border-radius */
+        }
+
+    </style>
+</head>
+<body class="bg-black text-gray-100 leading-relaxed">
+
+    <!-- Navigation Bar -->
+    <nav class="absolute top-0 right-0 p-8 z-50">
+        <div class="container mx-auto flex justify-end space-x-8 text-lg font-medium">
+            <a href="#home" class="text-white hover:text-cyan-400 transition-colors duration-300">HOME</a>
+            <a href="#about-me" class="text-white hover:text-cyan-400 transition-colors duration-300">ABOUT ME</a> <!-- Updated -->
+            <a href="#projects" class="text-white hover:text-cyan-400 transition-colors duration-300">PROJECTS & INTERNSHIPS</a> <!-- Updated -->
+            <a href="Pallavi R.pdf" target="_blank" class="text-white hover:text-cyan-400 transition-colors duration-300">RESUME</a>
+            <a href="#certificates" class="text-white hover:text-cyan-400 transition-colors duration-300">CERTIFICATES</a>
+            <a href="#quiz-demo" class="text-white hover:text-cyan-400 transition-colors duration-300">QUIZ</a>
+            <a href="#contact" class="text-white hover:text-cyan-400 transition-colors duration-300">CONTACT</a>
+        </div>
+    </nav>
+
+    <!-- Hero/Home Section -->
+    <section id="home" class="relative bg-black min-h-screen flex items-center justify-center py-20 px-4 overflow-hidden">
+        <canvas id="digitalRainCanvas"></canvas> <!-- Canvas for digital rain -->
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center relative z-10">
+            <!-- Left Content Area -->
+            <div class="text-left fade-in-up animated">
+                <p class="text-3xl font-light mb-4 text-cyan-400">Hi There! I'm</p>
+                <h1 id="typing-title" class="text-7xl md:text-8xl font-extrabold text-white mb-6 typing-effect"></h1>
+                <p class="text-xl leading-relaxed text-gray-400 max-w-lg mb-10">
+                    I'm a passionate Data Scientist and Python Developer. My expertise lies in transforming raw data into clear, actionable insights and developing robust, efficient solutions. I thrive on solving complex problems and building innovative applications that simplify processes and enhance user experiences.
+                </p>
+                <a href="Pallavi R.pdf" target="_blank" class="inline-block bg-cyan-600 text-white font-bold py-4 px-10 rounded-lg text-xl hover:bg-cyan-700 transition-colors duration-300 shadow-lg attractive-button">Download CV</a>
+            </div>
+            <!-- Right Spline Robot Area -->
+            <div class="flex justify-center items-center fade-in-up animated">
+                <div class="hero-spline-container">
+                    <iframe src="https://my.spline.design/genkubgreetingrobot-vOSHlIHS4mHbAu8bwb09zoFp/" title="3D Greeting Robot" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about-me" class="bg-gray-950 py-20 px-4"> <!-- Updated ID -->
+        <canvas id="cCodeRainCanvas"></canvas> <!-- Canvas for C-Code digital rain -->
+        <h2 class="text-5xl font-bold text-center text-cyan-500 mb-12">About Me</h2>
+        <div class="container mx-auto relative z-10"> <!-- Added relative z-10 to make content appear above canvas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+                <!-- Image Column (Left) -->
+                <div class="flex flex-col items-center w-full order-2 md:order-1">
+                    <div class="about-image-container w-full">
+                        <img src="https://img.freepik.com/premium-vector/girl-with-glasses-laptop_1026278-26015.jpg?semt=ais_hybrid&w=740&q=80" alt="Cartoon girl with laptop">
+                    </div>
+                </div>
+                <!-- Text Details Area (Right Column) -->
+                <div class="text-xl leading-relaxed text-gray-300 order-1 md:order-2">
+                    <h3 class="text-4xl font-semibold text-white mb-6">I'm Pallavi R</h3>
+                    <p class="mb-8">
+                        Hi, I’m Pallavi R, a passionate and professional Data Science student with a strong foundation in programming, mathematics, and database systems. I enjoy solving real-world problems using data-driven approaches and continuously expanding my skills in Python, SQL, Machine Learning, and Data Visualization.
+                    </p>
+                    <p class="mb-8">
+                        I’m currently focused on strengthening my expertise in DBMS, Discrete Mathematics, and Python programming, while also actively exploring projects that combine AI and analytics. Beyond academics, I love exploring innovative tech solutions, building creative projects, and sharing knowledge with others. My career goal is to become a skilled Data Scientist / AI Engineer, contributing to impactful projects that drive meaningful insights and solutions.
+                    </p>
+
+                    <h3 class="text-3xl font-semibold text-white mb-4">Key Highlights</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-2">
+                        <li>Proficient in Python, SQL, and Data Analysis</li>
+                        <li>Interested in Machine Learning & AI applications</li>
+                        <li>Strong academic background in Data Science & Mathematics</li>
+                        <li>Enthusiastic about building projects and learning by doing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects & Internships Section -->
+    <section id="projects" class="bg-black py-20 px-4 fade-in-up"> <!-- Updated ID and Title -->
+        <canvas id="symbolsRainCanvas"></canvas> <!-- Canvas for background code effect -->
+        <h2 class="text-5xl font-bold text-cyan-500 mb-12 text-center">Projects & Internships</h2> <!-- Updated Title -->
+        <div class="container mx-auto relative z-10">
+            <!-- Core Projects Section -->
+            <h3 class="text-4xl font-bold text-white mb-8 text-center mt-16">Core Projects</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-16">
+                <!-- Project Card: Resume-Analyzer-Job-Recommendation-System -->
+                <div class="project-card flex flex-col justify-between" data-github-url="https://github.com/pallu6753/AI-Resume-Analyzer-Job-Recommendation-System.git">
+                    <div>
+                        <h3 class="text-3xl font-semibold text-cyan-400 mb-3">🤖 AI Resume Analyzer + Job Recommendation System – Major Project (2025)</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
+                            <li>Developed an intelligent system to analyze resumes using Natural Language Processing (NLP) and Machine Learning techniques.</li>
+                            <li>Extracted key skills, education, and experience from uploaded resumes to build structured candidate profiles.</li>
+                            <li>Matched candidate profiles with job descriptions to recommend suitable job roles based on skill similarity.</li>
+                            <li>Identified missing skills and provided improvement suggestions to enhance employability.</li>
+                            <li>Designed dashboards to visualize candidate insights and job match scores for better decision-making.</li>
+                            <li>Implemented data preprocessing and feature extraction to improve recommendation accuracy.</li>
+                            <li>Tools Used: Python, NLP, Machine Learning, Power BI, Excel,under process</li>
+                        </ul>
+                    </div>
+                        <button class="view-project-details flex-1 attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg">View on GitHub</button>
+                    </div>
+
+                <!-- Project Card: Blind To Go App -->
+                <div class="project-card flex flex-col justify-between" data-github-url="https://github.com/pallu6753/TJIT">
+                    <div>
+                        <h3 class="text-3xl font-semibold text-cyan-400 mb-3">🏫 Club Registration System – Branding & UI Design Project</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
+                            <li>Designed user interface and registration flow for a digital club enrollment system.</li>
+                            <li>Created layout screens and branding elements to simplify student registration.</li>
+                            <li>Developed UI mockups and basic app structure using Canva and Thunkable App.</li>
+                            <li>Planned user journey and content flow for smooth onboarding experience.</li>
+                            <li>Collaborated on branding concepts and usability improvements.</li>
+                        </ul>
+                    </div>
+                    <button class="view-project-details w-full attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg mt-auto">View on GitHub</button>
+                </div>
+                
+                <!-- Project Card: Inception Prototype Expo 2024 -->
+                <div class="project-card flex flex-col justify-between" data-github-url="http://github.com/pallu6753/Inception-Prototype-">
+                    <div>
+                        <h3 class="text-3xl font-semibold text-cyan-400 mb-3">Inception Prototype Expo 2024 - 1st Place</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
+                            <li>Secured 1st place in Inception Prototype Expo 2024.</li>
+                            <li>Successfully designed and demonstrated a solution for community problems.</li>
+                            <li>Utilized skills learned in the Innovation and Design Thinking Course.</li>
+                            <li>Held at ComedKares Innovation Hub, JP Nagar. see u soon</li>
+                            <li>Held at ComedKares Innovation Hub, JP Nagar.</li>
+                        </ul>
+                    </div>
+                    <button class="view-project-details w-full attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg mt-auto">View on GitHub</button>
+                </div>
+                 <!-- Project Card: elta-blue-carbon-app -->
+                <div class="project-card flex flex-col justify-between" data-github-url="https://github.com/pallu6753/elta-blue-carbon-app">
+                    <div>
+                        <h3 class="text-3xl font-semibold text-cyan-400 mb-3">🌊 Elta Blue Carbon Platform – Academic Project (2025)</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
+                            <li>Studied the Elta platform to understand blue carbon project workflows across regions (Bay of Bengal).</li>
+                            <li>Analyzed stakeholder roles including Project Developer, Verifier, Investor, and Regulator.</li>
+                            <li>Explored carbon data visualization concepts for coastal ecosystem projects.</li>
+                            <li>Gained hands-on exposure to sustainability analytics and climate-tech platforms.</li>
+                            <li>Tools used: Power BI, Excel.</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                        <button class="view-project-details flex-1 attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg">View on GitHub</button>
+                        <a href="https://elta-blue-carbon-app.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex-1 attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg flex items-center justify-center">Live Demo</a>
+                    </div>
+                </div>
+                <!-- Project Card: TJIT PLACEMENT -->
+                <div class="project-card flex flex-col justify-between" data-github-url="https://github.com/pallu6753/TJIT-PLACEMENT-">
+                    <div>
+                        <h3 class="text-3xl font-semibold text-cyan-400 mb-3">🎓TJIT PLACEMENT</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
+                            <li>Developed an interactive Placement web to simulate human-like conversations using Natural Language Processing (NLP).</li>
+                            <li>Implemented query handling and response generation to assist users with basic information and support.</li>
+                            <li>Designed conversational flow for smooth user interaction and better user experience.</li>
+                            <li>Tested multiple scenarios to improve accuracy and reliability of responses.</li>
+                            <li>Gained practical exposure to AI concepts such as text processing, intent recognition, and automated replies.</li>
+                            <li>Tools Used: Python, NLP concepts, basic ML logic</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                        <button class="view-project-details flex-1 attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg">View on GitHub</button>
+                        <a href="https://tjit-pos.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex-1 attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg flex items-center justify-center text-decoration-none">Live Demo</a>
+                    </div>
+                </div>
+                <!-- NEW Project Card: AI Chatbot (Link to Live Demo) -->
+                <div class="project-card flex flex-col justify-between" data-github-url="https://github.com/pallu6753/ai-chatbot">
+                    <div>
+                        <h3 class="text-3xl font-semibold text-cyan-400 mb-3">🤖 AI Chatbot – Academic Project</h3>
+                        <ul class="list-disc list-inside text-gray-400 space-y-2 mb-6">
+                            <li>Developed an interactive AI chatbot capable of understanding user queries and generating meaningful responses using Natural Language Processing (NLP).</li>
+                            <li>Implemented conversational flows to handle multiple user inputs and provide real-time replies.</li>
+                            <li>Designed the chatbot to assist users with basic queries, information retrieval, and guided interactions.</li>
+                            <li>Focused on improving response accuracy and user experience through structured intent handling.</li>
+                            <li>Tested various scenarios to ensure smooth and reliable conversation flow.</li>
+                            <li>Gained hands-on experience with AI concepts such as text processing, intent recognition, and response generation.</li>
+                            <li>Tools / Technologies: Python, NLP concepts, basic ML models (if applicable), UI integration</li>
+                        </ul>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                        <button class="view-project-details flex-1 attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg">View on GitHub</button>
+                        <a href="https://demo.chat-sdk.dev/" target="_blank" rel="noopener" class="flex-1 attractive-button text-white font-bold py-3 px-6 rounded-lg text-lg shadow-lg flex items-center justify-center">Live Demo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section (Re-themed with button-like cards) -->
+    <section id="skills" class="relative bg-black py-20 px-4 fade-in-up">
+        <canvas id="dataNodesCanvas"></canvas> <!-- Canvas for C Code Rain -->
+        <h2 class="text-5xl font-bold text-cyan-500 mb-12 text-center relative z-10">My Skills</h2>
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 relative z-10">
+            <div class="skill-card">
+                <h3 class="text-3xl font-semibold text-cyan-400 mb-4">Python Programming</h3>
+                <p class="text-gray-300">Proficient in data analysis, automation, web scraping, scripting, and developing robust applications using Python (e.g., Pandas, NumPy, SciPy).</p>
+            </div>
+            <div class="skill-card">
+                <h3 class="text-3xl font-semibold text-cyan-400 mb-4">Web Development</h3>
+                <p class="text-gray-300">Skilled in building responsive, interactive, and user-friendly web interfaces using modern HTML5, CSS3, and JavaScript frameworks (e.g., React basics, Tailwind CSS).</p>
+            </div>
+            <div class="skill-card">
+                <h3 class="text-3xl font-semibold text-cyan-400 mb-4">Database Management</h3>
+                <p class="text-gray-300">Experience with relational (SQL - MySQL, PostgreSQL) and non-relational (NoSQL - MongoDB) databases, including querying, design and optimization.</p>
+            </div>
+            <div class="skill-card">
+                <h3 class="text-3xl font-semibold text-cyan-400 mb-4">Data Analysis & Visualization</h3>
+                <p class="text-gray-300">Expertise in data analysis, cleaning, and interpretation, as well as creating compelling data visualizations using libraries like Matplotlib, Seaborn, Plotly, and developing interactive dashboards with Power BI and Tableau.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates Section (No Shadows) -->
+    <section id="certificates" class="bg-gray-900 py-20 px-4 fade-in-up">
+        <canvas id="sparklingDataCanvas"></canvas> <!-- Canvas for R Code Rain -->
+        <h2 class="text-5xl font-bold text-center text-cyan-500 mb-12">My Certificates</h2>
+        <p class="text-center text-gray-400 text-lg mb-16 max-w-2xl mx-auto">
+            A selection of certifications that validate my skills and expertise in various domains.
+        </p>
+
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 relative z-10">
+            <!-- The Complete Google Sheets Course - Google Spreadsheet Tips (from uploaded image) -->
+            <!-- Certificate of Achievement – Star Performer -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Certificate of Achievement – Star Performer</h3>
+                <div class="certificate-image-container" data-src="certification/Screenshot 2026-01-25 222026.png" data-alt="Data Visualization Trainee Early Remote Internship">
+                    <img src="certification/Screenshot 2026-01-25 222026.png" alt="Data Visualization Trainee Early Remote Internship">
+                </div>
+                <p class="text-gray-300 text-base text-center">
+                    Data Visualization Trainee Early Remote Internship<br>
+                    Saint Louis University (supported) | Excelerate (powered)<br>
+                    📅 Completed on: October 1, 2025
+                </p>
+            </div>
+            <!-- Innovation & Design Thinking Program Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Innovation & Design Thinking Program</h3>
+                <div class="certificate-image-container" data-src="certification/1732292056839.jpg" data-alt="Innovation & Design Thinking Certificate">
+                    <img src="certification/1732292056839.jpg" alt="Innovation & Design Thinking Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">COMED KARES Innovation Hub & T.John Institute of Technology</p>
+            </div>
+            <!-- TECHFEST PARICHAY 2.0 - Certificate of Appreciation -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">TECHFEST PARICHAY 2.0 - Web Weaving Winner</h3>
+                <div class="certificate-image-container" data-src="certification/1732292375250.jpg" data-alt="TECHFEST PARICHAY 2.0 Certificate">
+                    <img src="certification/1732292375250.jpg" alt="TECHFEST PARICHAY 2.0 Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">T.John Institute of Technology | Nov 2024</p>
+            </div>
+            <!-- Java for Beginners - Infosys Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Java for Beginners</h3>
+                <div class="certificate-image-container" data-src="certification/1732293295119.jpg" data-alt="Java for Beginners Certificate">
+                    <img src="certification/1732293295119.jpg" alt="Java for Beginners Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Infosys Springboard | Nov 2024</p>
+            </div>
+            <!-- Introduction to C++ - Sololearn Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Introduction to C++</h3>
+                <div class="certificate-image-container" data-src="certification/1732293428309.jpg" data-alt="Introduction to C++ Certificate">
+                    <img src="certification/1732293428309.jpg" alt="Introduction to C++ Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Sololearn | Oct 2024</p>
+            </div>
+            <!-- Microsoft Azure AI Fundamentals Internship - IN-BIOT Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Microsoft Azure AI Fundamentals Internship</h3>
+                <div class="certificate-image-container" data-src="certification/1732293730081.jpg" data-alt="Microsoft Azure AI Fundamentals Certificate">
+                    <img src="certification/1732293730081.jpg" alt="Microsoft Azure AI Fundamentals Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">IN-BIOT Private Limited | Mar - Jun 2024</p>
+            </div>
+            <!-- Freedom with AI Masterclass Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Freedom with AI Masterclass</h3>
+                <div class="certificate-image-container" data-src="certification/1739863094435.jpg" data-alt="Freedom with AI Masterclass Certificate">
+                    <img src="certification/1739863094435.jpg" alt="Freedom with AI Masterclass Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Freedom with AI | Jan 2025</p>
+            </div>
+            <!-- Certificate of Appreciation - Talent Hunt 1.0 -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Certificate of Appreciation - Talent Hunt 1.0</h3>
+                <div class="certificate-image-container" data-src="certification/1741353543281.jpg" data-alt="Talent Hunt 1.0 Certificate of Appreciation">
+                    <img src="certification/1741353543281.jpg" alt="Talent Hunt 1.0 Certificate of Appreciation">
+                </div>
+                <p class="text-gray-300 text-base text-center">Alpha Tech Academy | Mar 2025</p>
+            </div>
+            <!-- Mobile App Design in Figma: From Concept to Prototype - Udemy Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Mobile App Design in Figma</h3>
+                <div class="certificate-image-container" data-src="certification/1746284414796.jpg" data-alt="Mobile App Design in Figma Certificate">
+                    <img src="certification/1746284414796.jpg" alt="Mobile App Design in Figma Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Udemy | May 2025</p>
+            </div>
+            <!-- Mastering MySQL: Database Creation, Management & SQL Queries - Udemy Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Mastering MySQL</h3>
+                <div class="certificate-image-container" data-src="certification/1746627381186.jpg" data-alt="Mastering MySQL Certificate">
+                    <img src="certification/1746627381186.jpg" alt="Mastering MySQL Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Udemy | May 2025</p>
+            </div>
+            <!-- PowerBI Workshop Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">PowerBI Workshop</h3>
+                <div class="certificate-image-container" data-src="certification/1732293959635.jpg" data-alt="PowerBI Workshop Certificate">
+                    <img src="certification/1732293959635.jpg" alt="PowerBI Workshop Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">OfficeMaster | Nov 2024</p>
+            </div>
+             <!-- Inception Prototype Expo 2024 Certificate of Achievement (Duplicate as image also used for project) -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Inception Prototype Expo 2024 Certificate</h3>
+                <div class="certificate-image-container" data-src="certification/1732294637861.jpg" data-alt="Inception Prototype Expo 2024 Certificate">
+                    <img src="certification/1732294637861.jpg" alt="Inception Prototype Expo 2024 Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">COMED KARES Innovation Hub & T.John Institute of Technology | June 2024</p>
+            </div>
+             <!-- Data Analytics Bootcamp - YHills Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Data Analytics Bootcamp</h3>
+                <div class="certificate-image-container" data-src="certification/1732897206334.jpg" data-alt="Data Analytics Bootcamp Certificate">
+                    <img src="certification/1732897206334.jpg" alt="Data Analytics Bootcamp Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">YHills | Nov 2024</p>
+            </div>
+             <!-- Advanced Computing and Communications Conference ADCOM 2024 Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">ADCOM 2024 Conference Participation</h3>
+                <div class="certificate-image-container" data-src="certification/1735394195416.jpg" data-alt="ADCOM 2024 Certificate">
+                    <img src="certification/1735394195416.jpg" alt="ADCOM 2024 Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">IIIT Bangalore | Dec 2024</p>
+            </div>
+            <!-- NEW ENTRY: ADCOM 2024 Conference Participation (Duplicate Entry) -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">ADCOM 2024 Conference Participation (Another)</h3>
+                <div class="certificate-image-container" data-src="certification/1735394195416.jpg" data-alt="ADCOM 2024 Certificate Duplicate">
+                    <img src="certification/1735394195416.jpg" alt="ADCOM 2024 Certificate Duplicate">
+                </div>
+                <p class="text-gray-300 text-base text-center">IIIT Bangalore | Dec 2024</p>
+            </div>
+             <!-- Java Bootcamp - LetsUpgrade Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Java Bootcamp</h3>
+                <div class="certificate-image-container" data-src="certification/1738253503372.jpg" data-alt="Java Bootcamp Certificate">
+                    <img src="certification/1738253503372.jpg" alt="Java Bootcamp Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">LetsUpgrade | Jan 2025</p>
+            </div>
+            <!-- Microsoft Azure AI Fundamentals - IN-BIOT Certificate (Another Repeat, but from a new image) -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Microsoft Azure AI Fundamentals (Another)</h3>
+                <div class="certificate-image-container" data-src="certification/1747927787732.jpg" data-alt="Microsoft Azure AI Fundamentals Certificate (Another)">
+                    <img src="certification/1747927787732.jpg" alt="Microsoft Azure AI Fundamentals Certificate (Another)">
+                </div>
+                <p class="text-gray-300 text-base text-center">IN-BIOT Private Limited | Aug - Dec 2024</p>
+            </div>
+             <!-- Python Crash Course - Campus Code Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Python Crash Course</h3>
+                <div class="certificate-image-container" data-src="certification/1748101891819.jpg" data-alt="Python Crash Course Certificate">
+                    <img src="certification/1748101891819.jpg" alt="Python Crash Course Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Campus Code | Jan 2025</p>
+            </div>
+            <!-- The Complete AI-Powered Copywriting Course & ChatGPT Course - Udemy Certificate -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">AI-Powered Copywriting & ChatGPT Course</h3>
+                <div class="certificate-image-container" data-src="certification/Screenshot 2025-06-12 103209.png" data-alt="AI-Powered Copywriting & ChatGPT Course Certificate">
+                    <img src="certification/Screenshot 2025-06-12 103209.png" alt="AI-Powered Copywriting & ChatGPT Course Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Udemy | April 2025</p>
+            </div>
+            <!-- NEW CERTIFICATE: Feature Engineering For Machine Learning 101 -->
+            <div class="certificate-card flex flex-col justify-center items-center">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-3 text-center">Feature Engineering For Machine Learning 101</h3>
+                <div class="certificate-image-container" data-src="certification/WhatsApp Image 2025-08-24 at 22.17.57_834657d4.jpg" data-alt="Feature Engineering For Machine Learning 101 Certificate">
+                    <img src="certification/WhatsApp Image 2025-08-24 at 22.17.57_834657d4.jpg" alt="Feature Engineering For Machine Learning 101 Certificate">
+                </div>
+                <p class="text-gray-300 text-base text-center">Udemy | July 2025</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive E-Learning Quiz Section -->
+    <section id="quiz-demo" class="relative bg-gray-950 py-20 px-4 text-gray-100 fade-in-up">
+        <canvas id="quizCanvas"></canvas> <!-- Canvas for subtle background effect -->
+        <h2 class="text-5xl font-bold text-cyan-500 mb-12 text-center relative z-10">Interactive E-Learning Quiz</h2>
+        <p class="text-xl text-center mb-10 max-w-2xl mx-auto relative z-10">
+            Test your knowledge with this quick quiz, demonstrating interactive learning elements.
+        </p>
+        <div class="quiz-container relative z-10">
+            <h2 id="quiz-question" class="text-3xl font-bold mb-8"></h2>
+            <div id="quiz-options-container" class="space-y-4">
+                <!-- Options will be dynamically loaded here -->
+            </div>
+            <button id="quiz-submit-btn" class="submit-button-quiz">Submit Answer</button>
+            <p id="quiz-feedback" class="text-lg mt-4"></p>
+
+            <div id="quiz-results-section" class="result-section hidden">
+                <h3 class="text-2xl font-bold mb-4">Quiz Results</h3>
+                <p id="quiz-score-display" class="text-xl"></p>
+                <button id="quiz-restart-btn" class="restart-button">Restart Quiz</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gray-950 py-20 px-4 text-gray-100 fade-in-up">
+        <canvas id="galaxyStarsCanvas"></canvas> <!-- Canvas for C Program Code Rain -->
+        <h2 class="text-5xl font-bold text-cyan-500 mb-12 text-center">Get In Touch! <span class="text-2xl block mt-2 text-gray-400">(A Galaxy of Opportunities Awaits!)</span></h2>
+        <p class="text-xl text-center mb-10">
+            I'm always enthusiastic about new opportunities, collaborations, and connecting with fellow tech enthusiasts. Feel free to reach out!
+        </p>
+        <div class="container mx-auto max-w-2xl relative z-10">
+            <form id="contactForm" class="space-y-8"> <!-- Added ID to the form -->
+                <div>
+                    <label for="name" class="block text-xl font-medium mb-3">Your Name</label>
+                    <input type="text" id="name" name="name" class="w-full p-4 rounded-xl bg-gray-800 border border-cyan-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-100" placeholder="Enter your name" required>
+                </div>
+                <div>
+                    <label for="email" class="block text-xl font-medium mb-3">Your Email</label>
+                    <input type="email" id="email" name="email" class="w-full p-4 rounded-xl bg-gray-800 border border-cyan-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-100" placeholder="Enter your email" required>
+                </div>
+                <!-- UPDATED: Contact Number Field for Contact Form -->
+                <div>
+                    <label for="contact" class="block text-xl font-medium mb-3">Contact Number</label>
+                    <input type="tel" id="contact" name="contact" class="w-full p-4 rounded-xl bg-gray-800 border border-cyan-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-100" placeholder="Enter your phone number (e.g., +91 12345 67890)" required>
+                </div>
+                <div>
+                    <label for="message" class="block text-xl font-medium mb-3">Message</label>
+                    <textarea id="message" name="message" rows="7" class="w-full p-4 rounded-xl bg-gray-800 border border-cyan-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-100" placeholder="Type your message..." required></textarea>
+                </div>
+                <button type="submit" class="w-full attractive-button text-white font-bold py-4 px-8 rounded-xl text-xl shadow-lg flex items-center justify-center">
+                    Send Message
+                    <span id="contact-loader" class="loader ml-2 hidden"></span> <!-- Loader for contact form -->
+                </button>
+            </form>
+            <!-- Message Box for Contact Form Feedback -->
+            <div id="contactMessageBox" class="hidden">
+                <!-- Message will be displayed here -->
+            </div>
+            <div class="text-center mt-12 space-y-3 text-lg">
+                <p>Email: <a href="mailto:pallavirpallavir20@gmail.com" class="underline text-cyan-400 hover:text-cyan-300 transition-colors duration-300">pallavirpallavir20@gmail.com</a></p>
+                <p>GitHub: <a href="https://github.com/pallu6753" class="underline text-cyan-400 hover:text-cyan-300 transition-colors duration-300" target="_blank" rel="noopener noreferrer">github.com/pallu6753</a></p>
+                <p>LinkedIn: <a href="https://www.linkedin.com/in/pallavi-r-14a678292" target="_blank" rel="noopener noreferrer" class="underline text-cyan-400 hover:text-cyan-300 transition-colors duration-300">linkedin.com/in/pallavi-r-14a678292</a></p>
+                <p>Contact Number: <a href="tel:+917975582202" class="underline text-cyan-400 hover:text-cyan-300 transition-colors duration-300">+91 7975582202</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-10 text-center text-md border-t border-gray-700">
+        <p>&copy; 2026 Pallavi R. All rights reserved.</p>
+        <p class="mt-2">Designed and built with <a href="https://tailwindcss.com/" class="text-cyan-400 hover:underline" target="_blank" rel="noopener noreferrer">Tailwind CSS</a>.</p>
+    </footer>
+
+    <!-- Overlay element for screen darkening -->
+    <div id="screenOverlay"></div>
+    <!-- Custom message box for image clicks -->
+    <div id="imageClickMessageBox" class="hidden"></div>
+
+    <!-- NEW: Full-screen Image Modal -->
+    <div id="fullscreenImageModal" class="fullscreen-modal">
+        <span id="fullscreenModalClose" class="fullscreen-modal-close">&times;</span>
+        <div class="fullscreen-modal-content">
+            <img src="" alt="Full-screen Certificate" id="fullscreenModalImage">
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase imports - only keep what's needed for other parts if no longer used for auth/contact
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase variables
+        let app;
+        let db;
+        let auth;
+        let userId;
+        let isAuthReady = false;
+
+        // Global DOM element variables for Club Registration form (accessed outside DOMContentLoaded)
+        let clubRegistrationFormTool;
+        let toolFullName;
+        let toolEmail;
+        let toolStudentId;
+        let toolClubInterest;
+        let toolMessageBox;
+        let clubRegisterLoader;
+        let viewRegistrationsBtn;
+        let registrationsListDiv;
+        let noRegistrationsMessage;
+        let viewRegistrationsLoader;
+        let imageClickMessageBox; // Global for the new message box
+
+        // NEW: Global DOM elements for Fullscreen Modal
+        let fullscreenImageModal;
+        let fullscreenModalImage;
+        let fullscreenModalClose;
+
+        // Initialize Firebase
+        // These are placeholders for local execution. If deploying to Canvas, these will be populated.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "YOUR_FIREBASE_API_KEY", // Replace with your actual Firebase API Key
+            authDomain: "YOUR_FIREBASE_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_FIREBASE_PROJECT_ID",
+            storageBucket: "YOUR_FIREBASE_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
+            appId: "YOUR_FIREBASE_APP_ID"
+        };
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+
+        try {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    isAuthReady = true;
+                    console.log("Firebase authenticated. User ID:", userId);
+                    // Ensure DOM elements are available before calling loadRegistrations
+                    if (document.readyState === 'loading') { // Loading still in process
+                        document.addEventListener('DOMContentLoaded', () => {
+                             loadRegistrations(); // Initial load for club registrations
+                        });
+                    } else { // DOM is already loaded
+                        loadRegistrations(); // Initial load for club registrations
+                    }
+                } else {
+                    console.log("No user signed in. Attempting anonymous sign-in.");
+                    try {
+                        if (initialAuthToken) {
+                             await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                             await signInAnonymously(auth);
+                        }
+                    } catch (error) {
+                        console.error("Firebase authentication failed:", error);
+                        // Fallback: Use a random UUID if anonymous sign-in fails
+                        userId = crypto.randomUUID();
+                        isAuthReady = true;
+                        console.log("Using anonymous UUID for userId:", userId);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error initializing Firebase:", error);
+        }
+
+        // --- Functions for Club Registration Form (Firebase still active) ---
+        // Function to save registration to Firestore
+        async function saveRegistration(formData) {
+            if (!isAuthReady) {
+                toolMessageBox.textContent = "Authentication not ready. Please wait a moment and try again.";
+                toolMessageBox.classList.remove('hidden');
+                setTimeout(() => { toolMessageBox.classList.add('show'); }, 50);
+                return;
+            }
+
+            clubRegisterLoader.classList.remove('hidden');
+            toolMessageBox.classList.add('hidden'); // Hide previous message
+            toolMessageBox.classList.remove('show');
+
+            try {
+                // Firestore path for user-specific data
+                const registrationsRef = collection(db, `artifacts/${appId}/users/${userId}/club_registrations`);
+                await addDoc(registrationsRef, {
+                    ...formData,
+                    timestamp: new Date() // Add a timestamp for ordering
+                });
+                toolMessageBox.textContent = `Thank you, ${formData.fullName}! Your registration for the ${formData.clubInterest} club has been received.`;
+                toolMessageBox.classList.remove('hidden');
+                setTimeout(() => { toolMessageBox.classList.add('show'); }, 50);
+                clubRegistrationFormTool.reset(); // Clear form on success
+                loadRegistrations(); // Reload registrations to show the new one
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                toolMessageBox.textContent = "Error saving registration. Please try again.";
+                toolMessageBox.classList.remove('hidden');
+                setTimeout(() => { toolMessageBox.classList.add('show'); }, 50);
+            } finally {
+                clubRegisterLoader.classList.add('hidden');
+            }
+        }
+
+        // Function to load and display registrations from Firestore
+        function loadRegistrations() {
+            // Check if DOM elements are assigned before use
+            if (!viewRegistrationsLoader || !registrationsListDiv || !noRegistrationsMessage) {
+                 console.warn("DOM elements for registrations not yet available. Skipping loadRegistrations.");
+                 return;
+            }
+            if (!isAuthReady) {
+                console.warn("Firestore not ready for loading registrations. Waiting for authentication.");
+                return;
+            }
+
+            viewRegistrationsLoader.classList.remove('hidden');
+            registrationsListDiv.classList.add('hidden'); // Hide list while loading
+            registrationsListDiv.innerHTML = ''; // Clear previous entries
+            noRegistrationsMessage.classList.add('hidden'); // Hide initial no registrations message
+
+            const registrationsRef = collection(db, `artifacts/${appId}/users/${userId}/club_registrations`);
+            const q = query(registrationsRef);
+
+            // Use onSnapshot for real-time updates
+            onSnapshot(q, (snapshot) => {
+                viewRegistrationsLoader.classList.add('hidden');
+                registrationsListDiv.classList.remove('hidden');
+                registrationsListDiv.innerHTML = ''; // Clear list to prevent duplicates
+
+                if (snapshot.empty) {
+                    registrationsListDiv.appendChild(noRegistrationsMessage);
+                    noRegistrationsMessage.classList.remove('hidden');
+                    return;
+                }
+
+                const registrations = [];
+                snapshot.forEach(doc => {
+                    registrations.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Sort by timestamp (most recent first)
+                registrations.sort((a, b) => b.timestamp.toDate() - a.timestamp.toDate());
+
+                registrations.forEach(reg => {
+                    const regItem = document.createElement('div');
+                    regItem.classList.add('registration-item');
+                    regItem.innerHTML = `
+                        <p><strong>Name:</strong> <span class="item-value">${reg.fullName}</span></p>
+                        <p><strong>Email:</strong> <span class="item-value">${reg.email}</span></p>
+                        <p><strong>Student ID:</strong> <span class="item-value">${reg.studentId}</span></p>
+                        <p><strong>Club:</strong> <span class="item-value">${reg.clubInterest}</span></p>
+                        <p><strong>Registered:</strong> <span class="item-value">${reg.timestamp ? new Date(reg.timestamp.toDate()).toLocaleString() : 'N/A'}</span></p>
+                    `;
+                    registrationsListDiv.appendChild(regItem);
+                });
+            }, (error) => {
+                console.error("Error fetching registrations:", error);
+                viewRegistrationsLoader.classList.add('hidden');
+                registrationsListDiv.classList.remove('hidden');
+                registrationsListDiv.textContent = "Error loading registrations. Please try again.";
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Assign DOM elements to global variables here
+            clubRegistrationFormTool = document.getElementById('clubRegistrationFormTool');
+            toolFullName = document.getElementById('toolFullName');
+            toolEmail = document.getElementById('toolEmail');
+            toolStudentId = document.getElementById('toolStudentId');
+            toolClubInterest = document.getElementById('toolClubInterest');
+            toolMessageBox = document.getElementById('toolMessageBox');
+            clubRegisterLoader = document.getElementById('club-register-loader');
+            viewRegistrationsBtn = document.getElementById('viewRegistrationsBtn');
+            registrationsListDiv = document.getElementById('registrationsList');
+            noRegistrationsMessage = document.getElementById('noRegistrationsMessage');
+            viewRegistrationsLoader = document.getElementById('view-registrations-loader');
+            imageClickMessageBox = document.getElementById('imageClickMessageBox'); // Assign the new message box
+
+            // NEW: Assign fullscreen modal elements
+            fullscreenImageModal = document.getElementById('fullscreenImageModal');
+            fullscreenModalImage = document.getElementById('fullscreenModalImage');
+            fullscreenModalClose = document.getElementById('fullscreenModalClose');
+
+            const sections = document.querySelectorAll('section.fade-in-up');
+            const screenOverlay = document.getElementById('screenOverlay');
+            const body = document.body;
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animated');
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger when 10% of the section is visible
+                rootMargin: '0px 0px -100px 0px' // Adjust to trigger a bit earlier
+            });
+
+            sections.forEach(section => {
+                // Observe only if it's not the home section (which animates on load)
+                if (section.id !== 'home') {
+                    observer.observe(section);
+                }
+            });
+
+            // Add simple staggered animation for cards within sections
+            const animateCards = (parentSelector, cardSelector) => {
+                const parent = document.querySelector(parentSelector);
+                if (!parent) return;
+
+                const cardObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const cards = entry.target.querySelectorAll(cardSelector);
+                            cards.forEach((card, index) => {
+                                card.style.animation = `fadeInUp 0.8s ease-out forwards ${index * 0.1}s`;
+                                card.style.opacity = '0'; // Ensure it starts hidden for staggered effect
+                                card.style.transform = 'translateY(20px)'; // Ensure it starts below for staggered effect
+                            });
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1
+                });
+                cardObserver.observe(parent);
+            };
+
+            animateCards('#projects', '.project-card'); // Updated selector
+            animateCards('#skills', '.skill-card'); // Updated selector
+            animateCards('#certificates', '.certificate-card'); // Added for certificates section, updated selector
+            animateCards('#quiz-demo .quiz-container', '.option-button'); // Animate quiz options
+
+            // JavaScript for dynamic screen darkening towards the end of the page
+            window.addEventListener('scroll', () => {
+                const scrollPosition = window.scrollY + window.innerHeight;
+                const documentHeight = body.scrollHeight;
+                const triggerPoint = documentHeight * 0.85; // Start darkening when 85% of the page is scrolled
+
+                if (scrollPosition > triggerPoint) {
+                    const progress = (scrollPosition - triggerPoint) / (documentHeight - triggerPoint);
+                    const maxOpacity = 0.6;
+                    screenOverlay.style.opacity = Math.min(progress, maxOpacity);
+                } else {
+                    screenOverlay.style.opacity = 0;
+                }
+            });
+
+            // Typing effect for the hero title
+            const typingTitleElement = document.getElementById('typing-title');
+            const titles = ["Data Science Student", "Python Developer", "Problem Solver", "Data Analysis & Visualization"];
+            let titleIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function typeWriter() {
+                const currentTitle = titles[titleIndex];
+                if (isDeleting) {
+                    typingTitleElement.textContent = currentTitle.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    typingTitleElement.textContent = currentTitle.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                if (!isDeleting && charIndex === currentTitle.length) {
+                    setTimeout(() => isDeleting = true, 1500); // Pause at end of typing
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    titleIndex = (titleIndex + 1) % titles.length; // Move to next title
+                }
+
+                const typingSpeed = isDeleting ? 75 : 150;
+                setTimeout(typeWriter, typingSpeed);
+            }
+
+            typeWriter(); // Start the typing effect
+
+            // --- Digital Rain Canvas Animation (Hero Section) ---
+            const canvas = document.getElementById('digitalRainCanvas');
+            const ctx = canvas.getContext('2d');
+            let columns = [];
+            const fontSize = 15;
+            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            const colors = ['#00bcd4', '#FF69B4', '#FF0000', '#4169E1']; // Cyan, Hot Pink, Red, Royal Blue
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = document.getElementById('home').offsetHeight;
+                const numColumns = Math.floor(canvas.width / fontSize);
+                columns = Array(numColumns).fill(0);
+            }
+
+            function drawRain() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.font = `${fontSize}px monospace`;
+
+                for (let i = 0; i < columns.length; i++) {
+                    const y = columns[i] * fontSize;
+                    const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    ctx.fillStyle = randomColor;
+                    ctx.fillText(text, i * fontSize, y);
+
+                    if (y * fontSize > canvas.height && Math.random() > 0.975) {
+                        columns[i] = 0;
+                    } else {
+                        columns[i]++;
+                    }
+                }
+                requestAnimationFrame(drawRain);
+            }
+
+            // Initialize and start Hero animation
+            window.addEventListener('load', () => {
+                resizeCanvas();
+                requestAnimationFrame(drawRain);
+            });
+            window.addEventListener('resize', resizeCanvas);
+
+
+            // --- C-Code Digital Rain Canvas Animation (About Me Section) ---
+            const cCodeCanvas = document.getElementById('cCodeRainCanvas');
+            const cCodeCtx = cCodeCanvas.getContext('2d');
+            let cCodeColumns = [];
+            const cCodeFontSize = 14; // Slightly smaller font for keywords
+            const cCodeCharacters = [
+                'printf(){}', 'scanf(){}', 'int', 'char', 'float', 'double', 'void', 'main(){}',
+                'if(){}', 'else{}', 'for(){}', 'while(){}', 'do{}while(){}', 'switch(){}', 'case', 'break',
+                'continue', 'return', 'typedef', 'struct', 'union', 'enum', 'sizeof', '#include', '#define',
+                'const', 'extern', 'static', 'auto', 'register', 'volatile', 'goto', '&', '*', '->', '.',
+                ';', ',', '=', '==', '!=', '<', '>', '<=', '>=', '+', '-', '*', '/', '%', '++', '--',
+                '||', '&&', '!'
+            ];
+            const cCodeColors = ['#00FF00', '#00FFFF', '#FFD700']; // Green, Cyan, Gold
+
+            function resizeCCodeCanvas() {
+                cCodeCanvas.width = window.innerWidth;
+                // Height based on the #about-me section's actual rendered height
+                cCodeCanvas.height = document.getElementById('about-me').offsetHeight;
+                const numColumns = Math.floor(cCodeCanvas.width / cCodeFontSize);
+                cCodeColumns = Array(numColumns).fill(0);
+            }
+
+            function drawCCodeRain() {
+                cCodeCtx.fillStyle = 'rgba(10, 10, 10, 0.05)'; /* Background of about section */
+                cCodeCtx.fillRect(0, 0, cCodeCanvas.width, cCodeCanvas.height);
+
+                cCodeCtx.font = `${cCodeFontSize}px monospace`;
+
+                for (let i = 0; i < cCodeColumns.length; i++) {
+                    const y = cCodeColumns[i] * cCodeFontSize;
+                    const text = cCodeCharacters[Math.floor(Math.random() * cCodeCharacters.length)];
+                    const randomColor = cCodeColors[Math.floor(Math.random() * colors.length)];
+                    cCodeCtx.fillStyle = randomColor;
+                    cCodeCtx.fillText(text, i * cCodeFontSize, y);
+
+                    if (y * fontSize > cCodeCanvas.height && Math.random() > 0.98) {
+                        cCodeColumns[i] = 0;
+                    } else {
+                        cCodeColumns[i]++;
+                    }
+                }
+                requestAnimationFrame(drawCCodeRain);
+            }
+
+            // Initialize and start About Me animation
+            // Listen for the 'load' event and 'resize' events to ensure correct sizing and start animation
+            window.addEventListener('load', () => {
+                resizeCCodeCanvas();
+                requestAnimationFrame(drawCCodeRain);
+            });
+            window.addEventListener('resize', resizeCCodeCanvas);
+
+            // --- Symbols Rain Canvas Animation (Projects/Internships Section) ---
+            const symbolsCanvas = document.getElementById('symbolsRainCanvas');
+            const symbolsCtx = symbolsCanvas.getContext('2d');
+            let symbolsColumns = [];
+            const symbolsFontSize = 13; // Slightly smaller for dense feel
+            const symbolsCharacters = [
+                '{', '}', '[', ']', '(', ')', ';', ',', '.', '=', ':', '/', '<', '>', '&', '|',
+                '#', '@', '$', '%', '^', '*', '+', '-', '_', '!', '?', '~', '`',
+                'data', 'model', 'algo', 'code', 'python', 'sql', 'ml', 'ai', 'cloud', 'viz', 'etl', 'query'
+            ];
+            const symbolsColors = ['#00BFFF', '#1E90FF', '#4682B4', '#ADD8E6']; // DeepSkyBlue, DodgerBlue, SteelBlue, LightBlue
+
+            function resizeSymbolsRainCanvas() {
+                symbolsCanvas.width = window.innerWidth;
+                // Height based on the #projects section's actual rendered height
+                symbolsCanvas.height = document.getElementById('projects').offsetHeight;
+                const numColumns = Math.floor(symbolsCanvas.width / symbolsFontSize);
+                symbolsColumns = Array(numColumns).fill(0);
+            }
+
+            function drawSymbolsRain() {
+                symbolsCtx.fillStyle = 'rgba(10, 10, 10, 0.05)'; /* Background of projects section */
+                symbolsCtx.fillRect(0, 0, symbolsCanvas.width, symbolsCanvas.height);
+
+                symbolsCtx.font = `${symbolsFontSize}px monospace`;
+
+                for (let i = 0; i < symbolsColumns.length; i++) {
+                    const y = symbolsColumns[i] * symbolsFontSize;
+                    const text = symbolsCharacters[Math.floor(Math.random() * symbolsCharacters.length)];
+                    const randomColor = symbolsColors[Math.floor(Math.random() * symbolsColors.length)];
+                    symbolsCtx.fillStyle = randomColor;
+                    symbolsCtx.fillText(text, i * symbolsFontSize, y);
+
+                    if (y * symbolsFontSize > symbolsCanvas.height && Math.random() > 0.99) { // Slower reset
+                        symbolsColumns[i] = 0;
+                    } else {
+                        symbolsColumns[i]++;
+                    }
+                }
+                requestAnimationFrame(drawSymbolsRain);
+            }
+
+            // Initialize and start Projects/Internships animation
+            window.addEventListener('load', () => {
+                resizeSymbolsRainCanvas();
+                requestAnimationFrame(drawSymbolsRain);
+            });
+            window.addEventListener('resize', resizeSymbolsRainCanvas);
+
+            // --- NEW: C Code Rain Canvas Animation (Skills Section) ---
+            const skillsCanvas = document.getElementById('dataNodesCanvas'); // Reusing ID from previous iteration
+            const skillsCtx = skillsCanvas.getContext('2d');
+            let skillsCodeColumns = [];
+            const skillsCodeFontSize = 14;
+            const skillsCodeCharacters = [
+                '#include', 'int', 'main()', '{', '}', 'char', 'float', 'double', 'void', 'return',
+                'if', 'else', 'for', 'while', 'do', 'switch', 'case', 'break', 'continue',
+                'printf', 'scanf', ';', ',', '=', '==', '!=', '<', '>', '<=', '>=', '+', '-', '*', '/', '%'
+            ];
+            const skillsCodeColors = ['#00FFCC', '#00E0B0', '#00C299']; // Aqua/Teal shades
+
+            function resizeSkillsCodeCanvas() {
+                skillsCanvas.width = window.innerWidth;
+                skillsCanvas.height = document.getElementById('skills').offsetHeight;
+                const numColumns = Math.floor(skillsCanvas.width / skillsCodeFontSize);
+                skillsCodeColumns = Array(numColumns).fill(0);
+            }
+
+            function drawSkillsCodeRain() {
+                skillsCtx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+                skillsCtx.fillRect(0, 0, skillsCanvas.width, skillsCanvas.height);
+
+                skillsCtx.font = `${skillsCodeFontSize}px monospace`;
+
+                for (let i = 0; i < skillsCodeColumns.length; i++) {
+                    const y = skillsCodeColumns[i] * skillsCodeFontSize;
+                    const text = skillsCodeCharacters[Math.floor(Math.random() * skillsCodeCharacters.length)];
+                    const randomColor = skillsCodeColors[Math.floor(Math.random() * skillsCodeColors.length)];
+                    skillsCtx.fillStyle = randomColor;
+                    skillsCtx.fillText(text, i * skillsCodeFontSize, y);
+
+                    if (y * skillsCodeFontSize > skillsCanvas.height && Math.random() > 0.98) {
+                        skillsCodeColumns[i] = 0;
+                    } else {
+                        skillsCodeColumns[i]++;
+                    }
+                }
+                requestAnimationFrame(drawSkillsCodeRain);
+            }
+
+            // Initialize and start Skills animation
+            window.addEventListener('load', () => {
+                resizeSkillsCodeCanvas();
+                requestAnimationFrame(drawSkillsCodeRain);
+            });
+            window.addEventListener('resize', resizeSkillsCodeCanvas);
+
+            // --- NEW: R Code Rain Canvas Animation (Certificates Section) ---
+            const certificatesCanvas = document.getElementById('sparklingDataCanvas'); // Reusing ID
+            const certificatesCtx = certificatesCanvas.getContext('2d');
+            let certificatesCodeColumns = [];
+            const certificatesCodeFontSize = 14;
+            const certificatesCodeCharacters = [
+                '<-', 'function()', '{', '}', 'if', 'else', 'for', 'while', 'return',
+                'data.frame()', 'read.csv()', 'ggplot2', 'library()', 'plot()',
+                'dplyr', '%>%', 'select()', 'filter()', 'mutate()', 'summarise()',
+                '#', 'TRUE', 'FALSE', 'NA', 'NULL', 'factor()', 'vector()', 'list()',
+                '==', '!=', '<', '>', '<=', '>=', '&', '|', '!'
+            ];
+            const certificatesCodeColors = ['#66B2FF', '#3399FF', '#0066CC']; // Blue shades
+
+            function resizeCertificatesCodeCanvas() {
+                certificatesCanvas.width = window.innerWidth;
+                certificatesCanvas.height = document.getElementById('certificates').offsetHeight;
+                const numColumns = Math.floor(certificatesCanvas.width / certificatesCodeFontSize);
+                certificatesCodeColumns = Array(numColumns).fill(0);
+            }
+
+            function drawCertificatesCodeRain() {
+                certificatesCtx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+                certificatesCtx.fillRect(0, 0, certificatesCanvas.width, certificatesCanvas.height);
+
+                certificatesCtx.font = `${certificatesCodeFontSize}px monospace`;
+
+                for (let i = 0; i < certificatesCodeColumns.length; i++) {
+                    const y = certificatesCodeColumns[i] * certificatesCodeFontSize;
+                    const text = certificatesCodeCharacters[Math.floor(Math.random() * certificatesCodeCharacters.length)];
+                    const randomColor = certificatesCodeColors[Math.floor(Math.random() * certificatesCodeColors.length)];
+                    certificatesCtx.fillStyle = randomColor;
+                    certificatesCtx.fillText(text, i * certificatesCodeFontSize, y);
+
+                    if (y * certificatesCodeFontSize > certificatesCanvas.height && Math.random() > 0.98) {
+                        certificatesCodeColumns[i] = 0;
+                    } else {
+                        certificatesCodeColumns[i]++;
+                    }
+                }
+                requestAnimationFrame(drawCertificatesCodeRain);
+            }
+
+            // Initialize and start Certificates animation
+            window.addEventListener('load', () => {
+                resizeCertificatesCodeCanvas();
+                requestAnimationFrame(drawCertificatesCodeRain);
+            });
+            window.addEventListener('resize', resizeCertificatesCodeCanvas);
+
+            // --- NEW: Binary Stream Canvas Background Animation (Quiz Section) ---
+            const quizCanvas = document.getElementById('quizCanvas');
+            const quizCtx = quizCanvas.getContext('2d');
+            let binaryColumns = [];
+            const binaryFontSize = 16;
+            const binaryCharacters = ['0', '1'];
+            const binaryColors = ['#00FF00', '#33FF33']; // Bright green for binary
+
+            function resizeBinaryCanvas() {
+                quizCanvas.width = window.innerWidth;
+                quizCanvas.height = document.getElementById('quiz-demo').offsetHeight;
+                const numColumns = Math.floor(quizCanvas.width / binaryFontSize);
+                binaryColumns = Array(numColumns).fill(0); // Each column starts at y=0
+            }
+
+            function drawBinaryRain() {
+                quizCtx.fillStyle = 'rgba(10, 10, 10, 0.08)'; // Transparent dark background
+                quizCtx.fillRect(0, 0, quizCanvas.width, quizCanvas.height);
+
+                quizCtx.font = `${binaryFontSize}px monospace`;
+
+                for (let i = 0; i < binaryColumns.length; i++) {
+                    const y = binaryColumns[i] * binaryFontSize;
+                    const text = binaryCharacters[Math.floor(Math.random() * binaryCharacters.length)];
+                    const randomColor = binaryColors[Math.floor(Math.random() * binaryColors.length)];
+                    quizCtx.fillStyle = randomColor;
+                    quizCtx.fillText(text, i * binaryFontSize, y);
+
+                    // Reset column to top if it goes off-screen, with a chance for randomness
+                    if (y * binaryFontSize > quizCanvas.height && Math.random() > 0.95) {
+                        binaryColumns[i] = 0;
+                    } else {
+                        binaryColumns[i]++;
+                    }
+                }
+                requestAnimationFrame(drawBinaryRain);
+            }
+
+            // Initialize and start Quiz Canvas animation
+            window.addEventListener('load', () => {
+                resizeBinaryCanvas();
+                requestAnimationFrame(drawBinaryRain);
+            });
+            window.addEventListener('resize', resizeBinaryCanvas);
+
+
+            // --- NEW: C Program Code Rain Canvas Animation (Contact Section) ---
+            const contactCanvas = document.getElementById('galaxyStarsCanvas'); // Reusing ID
+            const contactCtx = contactCanvas.getContext('2d');
+            let contactCodeColumns = [];
+            const contactCodeFontSize = 16;
+            const contactCodeCharacters = [
+                '#include <stdio.h>', 'int main() {', 'printf("Hello, World!\\n");', 'return 0;', '}',
+                '#include <stdlib.h>', 'void setup() {', 'pinMode(LED_BUILTIN, OUTPUT);', 'digitalWrite(LED_BUILTIN, HIGH);', 'delay(1000);', 'digitalWrite(LED_BUILTIN, LOW);', 'delay(1000);', '}'
+            ]; // More specific C program snippets
+            const contactCodeColors = ['#FFD700', '#FFFF00', '#F0E68C']; // Gold, Yellow, Khaki (Classic console colors)
+
+            function resizeContactCodeCanvas() {
+                contactCanvas.width = window.innerWidth;
+                contactCanvas.height = document.getElementById('contact').offsetHeight;
+                const numColumns = Math.floor(contactCanvas.width / contactCodeFontSize);
+                contactCodeColumns = Array(numColumns).fill(0);
+            }
+
+            function drawContactCodeRain() {
+                contactCtx.fillStyle = 'rgba(10, 10, 10, 0.08)'; // Slightly transparent dark background
+                contactCtx.fillRect(0, 0, contactCanvas.width, contactCanvas.height);
+
+                contactCtx.font = `${contactCodeFontSize}px monospace`;
+
+                for (let i = 0; i < contactCodeColumns.length; i++) {
+                    const y = contactCodeColumns[i] * contactCodeFontSize;
+                    const text = contactCodeCharacters[Math.floor(Math.random() * contactCodeCharacters.length)];
+                    const randomColor = contactCodeColors[Math.floor(Math.random() * contactCodeColors.length)];
+                    contactCtx.fillStyle = randomColor;
+                    contactCtx.fillText(text, i * contactCodeFontSize, y);
+
+                    if (y * contactCodeFontSize > contactCanvas.height && Math.random() > 0.97) {
+                        contactCodeColumns[i] = 0;
+                    } else {
+                        contactCodeColumns[i]++;
+                    }
+                }
+                requestAnimationFrame(drawContactCodeRain);
+            }
+
+            // Initialize and start Contact section animation
+            window.addEventListener('load', () => {
+                resizeContactCodeCanvas();
+                requestAnimationFrame(drawContactCodeRain);
+            });
+            window.addEventListener('resize', resizeContactCodeCanvas);
+
+
+            // --- Gemini API Integration ---
+            const GEMINI_MODEL = "gemini-2.5-flash-preview-05-20";
+            const RETRY_DELAY_MS = 1000;
+
+            async function callGeminiAPI(prompt, outputElement, loaderElement, type = 'text', outputColor = '') {
+                outputElement.textContent = ''; // Clear previous output
+                outputElement.classList.add('text-center', 'justify-center', 'items-center'); // Center loading text
+                loaderElement.classList.remove('hidden'); // Show loader
+
+                let retries = 0;
+                while (retries < 5) { // Max 5 retries
+                    try {
+                        let chatHistory = [];
+                        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                        const payload = { contents: chatHistory };
+
+                        // IMPORTANT: For local VS Code execution, replace with your actual Gemini API key.
+                        // You can get one from Google AI Studio: https://makersuite.google.com/
+                        const apiKey = "AIzaSyBRpzkgspfJmyKOBW2SckTpm1m96WdL8dE"; // <--- Gemini API KEY REPLACED!
+
+                        if (apiKey === "YOUR_GEMINI_API_KEY_HERE" || apiKey === "") {
+                            outputElement.textContent = "Error: Please provide your Gemini API Key in the JavaScript code to use AI features.";
+                            outputElement.style.color = '#f44336'; // Red for error
+                            loaderElement.classList.add('hidden');
+                            return;
+                        }
+
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            if (response.status === 429) { // Too Many Requests
+                                const delay = RETRY_DELAY_MS * Math.pow(2, retries);
+                                console.warn(`Rate limit hit. Retrying in ${delay / 1000}s...`);
+                                await new Promise(res => setTimeout(res, delay));
+                                retries++;
+                                continue;
+                            } else {
+                                throw new Error(`API error: ${response.status} ${response.statusText}`);
+                            }
+                        }
+
+                        const result = await response.json();
+
+                        if (result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) { // Fixed accessor
+                            const text = result.candidates[0].content.parts[0].text;
+                            outputElement.textContent = text;
+                            if (outputColor) {
+                                outputElement.style.color = outputColor; // Apply custom color
+                            } else {
+                                outputElement.style.color = ''; // Reset to default CSS if no custom color
+                            }
+                            outputElement.classList.remove('text-center', 'justify-center', 'items-center');
+                            if (type === 'code') {
+                                outputElement.innerHTML = `<code class="language-python">${text}</code>`;
+                            }
+                        } else {
+                            outputElement.textContent = "No content generated. Please try a different prompt.";
+                            outputElement.style.color = ''; // Reset color for error messages
+                            console.error("Gemini API response structure unexpected:", result);
+                        }
+                        break;
+                    } catch (error) {
+                        console.error("Error calling Gemini API:", error);
+                        outputElement.textContent = `Error: ${error.message}. Please try again.`;
+                        outputElement.style.color = ''; // Reset color for error messages
+                        break;
+                    } finally {
+                        loaderElement.classList.add('hidden');
+                    }
+                }
+                if (retries === 5) {
+                    outputElement.textContent = "Failed to get a response after multiple retries. Please try again later.";
+                    outputElement.style.color = ''; // Reset color for final failure message
+                }
+            }
+
+            // AI Code Translator Tool
+            const codeTranslateInputTool = document.getElementById('code-translate-input-tool');
+            const translatedCodeOutputTool = document.getElementById('translated-code-output-tool');
+            const codeTranslateLoaderTool = document.getElementById('code-translate-loader-tool');
+            const translateCodeBtnTool = document.getElementById('translate-code-btn-tool');
+
+            if (translateCodeBtnTool) {
+                translateCodeBtnTool.addEventListener('click', () => {
+                    const codePrompt = codeTranslateInputTool.value.trim();
+                    if (codePrompt) {
+                        callGeminiAPI(`Translate the following code. Specify the source and target languages in your prompt. For example: "Translate this Python code to JavaScript: print('Hello')". \n\nCode: ${codePrompt}`, translatedCodeOutputTool, codeTranslateLoaderTool, 'code');
+                    } else {
+                        translatedCodeOutputTool.textContent = "Please enter code and specify translation languages (e.g., 'Translate Python to Java: ...').";
+                    }
+                });
+            }
+
+            // AI Chatbot Tool
+            const chatHistoryOutputTool = document.getElementById('chat-history-output-tool');
+            const chatbotInputTool = document.getElementById('chatbot-input-tool');
+            const sendChatBtnTool = document.getElementById('send-chat-btn-tool');
+            const chatLoaderTool = document.getElementById('chat-loader-tool');
+
+            if (sendChatBtnTool) {
+                sendChatBtnTool.addEventListener('click', async () => {
+                    const userMessage = chatbotInputTool.value.trim();
+                    if (userMessage) {
+                        const userDiv = document.createElement('div');
+                        userDiv.className = 'chat-message user';
+                        userDiv.textContent = userMessage;
+                        chatHistoryOutputTool.appendChild(userDiv);
+                        chatbotInputTool.value = '';
+
+                        chatHistoryOutputTool.scrollTop = chatHistoryOutputTool.scrollHeight;
+
+                        chatLoaderTool.classList.remove('hidden');
+
+                        let retries = 0;
+                        while (retries < 5) {
+                            try {
+                                let currentChatHistory = [];
+                                Array.from(chatHistoryOutputTool.children).forEach(msgDiv => {
+                                    const role = msgDiv.classList.contains('user') ? 'user' : 'model';
+                                    currentChatHistory.push({ role: role, parts: [{ text: msgDiv.textContent }] });
+                                });
+                                currentChatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+                                const payload = { contents: currentChatHistory };
+                                // IMPORTANT: For local VS Code execution, replace with your actual Gemini API key.
+                                // You can get one from Google AI Studio: https://makersuite.google.com/
+                                const apiKey = "AIzaSyBRpzkgspfJmyKOBW2SckTpm1m96WdL8dE"; // <--- Gemini API KEY REPLACED!
+
+                                if (apiKey === "YOUR_GEMINI_API_KEY_HERE" || apiKey === "") {
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'chat-message ai';
+                                    errorDiv.textContent = "Error: Please provide your Gemini API Key in the JavaScript code to use AI features.";
+                                    chatHistoryOutputTool.appendChild(errorDiv);
+                                    chatLoaderTool.classList.add('hidden');
+                                    return;
+                                }
+
+                                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
+
+                                const response = await fetch(apiUrl, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(payload)
+                                });
+
+                                if (!response.ok) {
+                                    if (response.status === 429) {
+                                        const delay = RETRY_DELAY_MS * Math.pow(2, retries);
+                                        console.warn(`Rate limit hit. Retrying in ${delay / 1000}s...`);
+                                        await new Promise(res => setTimeout(res, delay));
+                                        retries++;
+                                        continue;
+                                    } else {
+                                        throw new Error(`API error: ${response.status} ${response.statusText}`);
+                                    }
+                                }
+
+                                const result = await response.json();
+
+                                if (result.candidates && result.candidates.length > 0 &&
+                                    result.candidates[0].content && result.candidates[0].content.parts &&
+                                    result.candidates[0].content.parts.length > 0) {
+                                    const aiResponseText = result.candidates[0].content.parts[0].text;
+                                    const aiDiv = document.createElement('div');
+                                    aiDiv.className = 'chat-message ai';
+                                    aiDiv.textContent = aiResponseText;
+                                    chatHistoryOutputTool.appendChild(aiDiv);
+                                } else {
+                                    const errorDiv = document.createElement('div');
+                                    errorDiv.className = 'chat-message ai';
+                                    errorDiv.textContent = "AI could not generate a response.";
+                                    chatHistoryOutputTool.appendChild(errorDiv);
+                                    console.error("Gemini API response structure unexpected:", result);
+                                }
+                                break;
+                            } catch (error) {
+                                console.error("Error calling Gemini API for chatbot:", error);
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'chat-message ai';
+                                errorDiv.textContent = `Error: ${error.message}. Please try again.`;
+                                chatHistoryOutputTool.appendChild(errorDiv);
+                                break;
+                            } finally {
+                                chatLoaderTool.classList.add('hidden');
+                                chatHistoryOutputTool.scrollTop = chatHistoryOutputTool.scrollHeight;
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Simulated AI Attendance System Tool
+            const attendanceInputTool = document.getElementById('attendance-input-tool');
+            const attendanceOutputTool = document.getElementById('attendance-output-tool');
+            const attendanceLoaderTool = document.getElementById('attendance-loader-tool');
+            const markAttendanceBtnTool = document.getElementById('mark-attendance-btn-tool');
+
+            if (markAttendanceBtnTool) {
+                markAttendanceBtnTool.addEventListener('click', async () => {
+                    const studentNames = attendanceInputTool.value.trim();
+                    if (studentNames) {
+                        attendanceOutputTool.textContent = '';
+                        attendanceLoaderTool.classList.remove('hidden');
+
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+
+                        const namesArray = studentNames.split('\n').map(name => name.trim()).filter(name => name.length > 0);
+                        let presentCount = 0;
+                        let absentCount = 0;
+                        let attendanceList = [];
+
+                        namesArray.forEach(name => {
+                            if (name.toLowerCase().includes('(absent)')) {
+                                absentCount++;
+                                attendanceList.push(`${name.replace('(absent)', '').trim()}: Absent`);
+                            } else {
+                                presentCount++;
+                                attendanceList.push(`${name}: Present`);
+                            }
+                        });
+
+                        const summary = `Attendance marked for ${namesArray.length} students:\n\nPresent: ${presentCount}\nAbsent: ${absentCount}\n\nDetailed list:\n${attendanceList.join('\n')}`;
+                        attendanceOutputTool.textContent = summary;
+
+                        attendanceLoaderTool.classList.add('hidden');
+                    } else {
+                        attendanceOutputTool.textContent = "Please enter student names to mark attendance.";
+                    }
+                });
+            }
+
+            // Event Listeners for AI Powered Tools (Demonstrations section, still exists)
+            const dsInput = document.getElementById('ds-input');
+            const dsOutput = document.getElementById('ds-output');
+            const dsLoader = document.getElementById('ds-loader');
+            const generateDsInsightBtn = document.getElementById('generate-ds-insight');
+
+            if (generateDsInsightBtn) {
+                generateDsInsightBtn.addEventListener('click', () => {
+                    const prompt = dsInput.value.trim();
+                    if (prompt) {
+                        callGeminiAPI(`Explain this data science concept concisely: ${prompt}`, dsOutput, dsLoader);
+                    } else {
+                        dsOutput.textContent = "Please enter a data science concept to explain.";
+                    }
+                });
+            }
+
+            const pyInput = document.getElementById('py-input');
+            const pyOutput = document.getElementById('py-output');
+            const pyLoader = document.getElementById('py-loader');
+            const generatePyCodeBtn = document.getElementById('generate-py-code');
+
+            if (generatePyCodeBtn) {
+                generatePyCodeBtn.addEventListener('click', () => {
+                    const prompt = pyInput.value.trim();
+                    if (prompt) {
+                        callGeminiAPI(`Provide a Python code snippet for: ${prompt}. Include comments.`, pyOutput, pyLoader, 'code');
+                    } else {
+                        pyOutput.textContent = "Please enter a request for a Python code snippet.";
+                    }
+                });
+            }
+
+            const projectInput = document.getElementById('project-input');
+            const projectOutput = document.getElementById('project-output');
+            const projectLoader = document.getElementById('project-loader');
+            const generateProjectIdeaBtn = document.getElementById('generate-project-idea');
+
+            if (generateProjectIdeaBtn) {
+                generateProjectIdeaBtn.addEventListener('click', () => {
+                    const interest = projectInput.value.trim();
+                    if (interest) {
+                        // The output color is now handled by the inline style in the HTML for project-output div
+                        callGeminiAPI(`Suggest a unique and impactful data science project idea related to "${interest}". Include potential data sources and a brief description of the problem it would solve.`, projectOutput, projectLoader);
+                    } else {
+                        projectOutput.textContent = "Please enter an area of interest to get a project idea.";
+                        projectOutput.style.color = ''; // Reset color if input is empty
+                    }
+                });
+            }
+
+            const resumeInput = document.getElementById('resume-input');
+            const resumeOutput = document.getElementById('resume-output');
+            const resumeLoader = document.getElementById('resume-loader');
+            const enhanceResumeBulletBtn = document.getElementById('enhance-resume-bullet');
+
+            if (enhanceResumeBulletBtn) {
+                enhanceResumeBulletBtn.addEventListener('click', () => {
+                    const rawBullet = resumeInput.value.trim();
+                    if (rawBullet) {
+                        callGeminiAPI(`Rephrase the following into a strong, quantifiable resume bullet point, focusing on impact and action verbs: "${rawBullet}"`, resumeOutput, resumeLoader);
+                    } else {
+                        resumeOutput.textContent = "Please enter a bullet point to enhance.";
+                    }
+                });
+            }
+
+            // Club Registration Form within AI Tools - FIREBASE INTEGRATION STILL ACTIVE
+            // Event listener for Club Registration Form submission
+            if (clubRegistrationFormTool) {
+                clubRegistrationFormTool.addEventListener('submit', function(event) {
+                    event.preventDefault();
+
+                    const formData = {
+                        fullName: toolFullName.value,
+                        email: toolEmail.value,
+                        studentId: toolStudentId.value,
+                        clubInterest: toolClubInterest.value
+                    };
+                    saveRegistration(formData);
+                });
+            }
+
+            // Event listener for View Registrations button
+            if (viewRegistrationsBtn) {
+                viewRegistrationsBtn.addEventListener('click', () => {
+                    if (registrationsListDiv.classList.contains('hidden')) {
+                         loadRegistrations(); // Load only when hidden and button is clicked
+                    } else {
+                        registrationsListDiv.classList.add('hidden'); // Hide if already visible
+                        registrationsListDiv.innerHTML = ''; // Clear content
+                        noRegistrationsMessage.classList.add('hidden');
+                    }
+                });
+            }
+
+            // --- Contact Form (INTEGRATED WITH GOOGLE APPS SCRIPT) ---
+            const contactForm = document.getElementById('contactForm');
+            const contactNameInput = document.getElementById('name');
+            const contactEmailInput = document.getElementById('email');
+            const contactContactInput = document.getElementById('contact'); // Get the NEW contact input
+            const contactMessageInput = document.getElementById('message');
+            const contactMessageBox = document.getElementById('contactMessageBox');
+            const contactLoader = document.getElementById('contact-loader');
+            const contactSection = document.getElementById('contact'); // Reference to the contact section
+
+            // Set the Google Apps Script Web App URL - UPDATED
+            // IMPORTANT: If you are running this locally, you MUST replace this with your deployed Google Apps Script URL.
+            // Instructions to deploy: https://developers.google.com/apps-script/guides/web-apps
+            const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxUt9CxT0UerN8HcWKx0B8T8DU9aOfCPoA92uGXQhyYTs5ggbU1-0hfL1GWjnAubWSN/exec';
+
+            async function submitContactForm(event) {
+                event.preventDefault();
+
+                // Show loader and indicate submission
+                contactLoader.classList.remove('hidden');
+                displayContactMessage("Submitting your message...", true); // Show submitting message
+
+                if (APPS_SCRIPT_WEB_APP_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_FOR_CONTACT_FORM_HERE' || APPS_SCRIPT_WEB_APP_URL === '') {
+                    displayContactMessage("Error: Please set `APPS_SCRIPT_WEB_APP_URL` in the JavaScript with your deployed Google Apps Script URL.", false);
+                    contactLoader.classList.add('hidden');
+                    return;
+                }
+
+                // Collect form data including the new 'contact' field
+                const formData = new FormData();
+                formData.append('name', contactNameInput.value);
+                formData.append('email', contactEmailInput.value);
+                formData.append('contact', contactContactInput.value); // Append the NEW contact field
+                formData.append('message', contactMessageInput.value);
+
+                // Convert FormData to a URL-encoded string for application/x-www-form-urlencoded
+                const params = new URLSearchParams(formData).toString();
+
+                try {
+                    const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: params
+                    });
+
+                    if (!response.ok) {
+                        // Attempt to read error message from response if available, otherwise use status text
+                        const errorData = await response.text(); // Read as text, might be JSON or plain text
+                        let errorMessage = `HTTP error! Status: ${response.status}`;
+                        try {
+                            const parsedError = JSON.parse(errorData);
+                            errorMessage = parsedError.message || errorMessage;
+                        } catch (e) {
+                            // If not JSON, use the raw text
+                            errorMessage = errorData || errorMessage;
+                        }
+                        throw new Error(errorMessage);
+                    }
+
+                    const result = await response.json(); // Apps Script sends back JSON
+
+                    if (result.result === 'success') {
+                        displayContactMessage("Thank you for your message! I'll get back to you soon.", true);
+                        contactForm.reset(); // Clear the form on success
+                        // Brighten the contact section on successful submission
+                        contactSection.classList.add('brighten');
+                        setTimeout(() => {
+                            contactSection.classList.remove('brighten');
+                        }, 3000); // Remove brighten effect after 3 seconds
+                    } else {
+                        // If Apps Script sent a non-success result with a custom message
+                        displayContactMessage(`Oops! There was an issue submitting your message: ${result.message || 'Unknown error'}. Please try again.`, false);
+                        console.error("Apps Script returned an error:", result.message);
+                    }
+                } catch (error) {
+                    console.error("Error submitting contact form:", error);
+                    displayContactMessage(`Failed to send message: ${error.message}. Please try again later.`, false);
+                } finally {
+                    contactLoader.classList.add('hidden'); // Hide loader regardless of outcome
+                }
+            }
+
+            function displayContactMessage(message, isSuccess) {
+                contactMessageBox.textContent = message;
+                contactMessageBox.classList.remove('hidden', 'show'); // Reset classes
+                const rootStyle = getComputedStyle(document.documentElement);
+                if (isSuccess) {
+                    contactMessageBox.style.borderColor = rootStyle.getPropertyValue('--primary-blue');
+                    contactMessageBox.style.color = rootStyle.getPropertyValue('--text-light');
+                } else {
+                    contactMessageBox.style.borderColor = '#f44336'; // Red for error
+                    contactMessageBox.style.color = '#f44336'; // Red text for error
+                }
+                setTimeout(() => {
+                    contactMessageBox.classList.add('show');
+                }, 50);
+            }
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', submitContactForm);
+            }
+
+            // --- Quiz Module Logic (Integrated) ---
+            const quizData = [
+                {
+                    question: "What does HTML stand for?",
+                    options: ["Hyper Text Markup Language", "Hyperlink and Text Markup Language", "Home Tool Markup Language", "Hyper Transfer Markup Language"],
+                    answer: "Hyper Text Markup Language"
+                },
+                {
+                    question: "Which of the following is a core component of an E-Learning Platform?",
+                    options: ["Social Media Feed", "Content Management System (CMS)", "Online Gaming Portal", "Recipe Sharing Forum"],
+                    answer: "Content Management System (CMS)"
+                },
+                {
+                    question: "Which programming language is commonly used for data analysis?",
+                    options: ["Java", "C++", "Python", "Ruby"],
+                    answer: "Python"
+                },
+                {
+                    question: "What does CSS stand for?",
+                    options: ["Cascading Style Sheets", "Computer Style Sheets", "Colorful Style Sheets", "Creative Style Sheets"],
+                    answer: "Cascading Style Sheets"
+                },
+                {
+                    question: "What is the primary purpose of an LMS?",
+                    options: ["Manage financial transactions", "Deliver and manage online learning content", "Process customer orders", "Host social events"],
+                    answer: "Deliver and manage online learning content"
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let selectedOption = null;
+
+            // Renamed elements to avoid ID conflicts with general portfolio elements
+            const quizQuestionElement = document.getElementById('quiz-question');
+            const quizOptionsContainer = document.getElementById('quiz-options-container');
+            const quizSubmitButton = document.getElementById('quiz-submit-btn');
+            const quizFeedbackElement = document.getElementById('quiz-feedback');
+            const quizResultsSection = document.getElementById('quiz-results-section');
+            const quizScoreDisplay = document.getElementById('quiz-score-display');
+            const quizRestartButton = document.getElementById('quiz-restart-btn');
+
+            /**
+             * Loads and displays the current question and its options for the quiz.
+             */
+            function loadQuizQuestion() {
+                // Reset state for new question
+                selectedOption = null;
+                quizFeedbackElement.textContent = '';
+                quizSubmitButton.classList.remove('hidden'); // Ensure submit button is visible
+                quizOptionsContainer.innerHTML = ''; // Clear previous options
+
+                if (currentQuestionIndex < quizData.length) {
+                    const currentQuiz = quizData[currentQuestionIndex];
+                    quizQuestionElement.textContent = currentQuiz.question;
+
+                    currentQuiz.options.forEach(option => {
+                        const button = document.createElement('button');
+                        button.classList.add('option-button');
+                        button.textContent = option;
+                        button.addEventListener('click', () => selectQuizOption(button, option));
+                        quizOptionsContainer.appendChild(button);
+                    });
+                } else {
+                    showQuizResults();
+                }
+            }
+
+            /**
+             * Handles the selection of an answer option for the quiz.
+             * @param {HTMLElement} buttonElement - The button element that was clicked.
+             * @param {string} optionText - The text content of the selected option.
+             */
+            function selectQuizOption(buttonElement, optionText) {
+                // Remove 'selected' class from all other options
+                document.querySelectorAll('#quiz-options-container .option-button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+
+                // Add 'selected' class to the clicked button
+                buttonElement.classList.add('selected');
+                selectedOption = optionText;
+            }
+
+            /**
+             * Checks the selected answer against the correct answer for the quiz.
+             */
+            function checkQuizAnswer() {
+                if (selectedOption === null) {
+                    quizFeedbackElement.textContent = "Please select an answer!";
+                    quizFeedbackElement.classList.remove('feedback-correct', 'feedback-incorrect');
+                    return;
+                }
+
+                const currentQuiz = quizData[currentQuestionIndex];
+                if (selectedOption === currentQuiz.answer) {
+                    score++;
+                    quizFeedbackElement.textContent = "Correct! 🎉";
+                    quizFeedbackElement.classList.add('feedback-correct');
+                    quizFeedbackElement.classList.remove('feedback-incorrect');
+                } else {
+                    quizFeedbackElement.textContent = `Incorrect. The correct answer was: ${currentQuiz.answer}`;
+                    quizFeedbackElement.classList.add('feedback-incorrect');
+                    quizFeedbackElement.classList.remove('feedback-correct');
+                }
+                quizSubmitButton.classList.add('hidden'); // Hide submit button after answering
+
+                // Briefly show feedback then move to next question
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    loadQuizQuestion();
+                }, 1500); // 1.5 second delay before next question
+            }
+
+            /**
+             * Displays the final quiz results.
+             */
+            function showQuizResults() {
+                quizQuestionElement.textContent = "Quiz Completed!";
+                quizOptionsContainer.innerHTML = ''; // Clear options
+                quizSubmitButton.classList.add('hidden'); // Hide submit button
+                quizFeedbackElement.textContent = ''; // Clear feedback
+
+                quizResultsSection.classList.remove('hidden');
+                quizScoreDisplay.textContent = `You scored ${score} out of ${quizData.length}!`;
+            }
+
+            /**
+             * Resets the quiz to its initial state.
+             */
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                quizResultsSection.classList.add('hidden');
+                loadQuizQuestion();
+            }
+
+            // Quiz Event Listeners
+            if (quizSubmitButton) {
+                quizSubmitButton.addEventListener('click', checkQuizAnswer);
+            }
+            if (quizRestartButton) {
+                quizRestartButton.addEventListener('click', restartQuiz);
+            }
+
+            // Initial load for the quiz
+            loadQuizQuestion();
+
+            // --- Full-screen Image Modal Logic ---
+            const certificateContainers = document.querySelectorAll('.certificate-image-container');
+
+            certificateContainers.forEach(container => {
+                container.addEventListener('click', (event) => {
+                    // Prevent opening the PDF if it's the PDF link
+                    if (event.target.tagName === 'A' || event.target.closest('a')) {
+                        return;
+                    }
+                    const imageSrc = container.dataset.src;
+                    const imageAlt = container.dataset.alt;
+
+                    if (imageSrc) {
+                        fullscreenModalImage.src = imageSrc;
+                        fullscreenModalImage.alt = imageAlt;
+                        fullscreenImageModal.classList.add('show');
+                    }
+                });
+            });
+
+            if (fullscreenModalClose) {
+                fullscreenModalClose.addEventListener('click', () => {
+                    fullscreenImageModal.classList.remove('show');
+                });
+            }
+
+            // Close modal when clicking outside the image content
+            if (fullscreenImageModal) {
+                fullscreenImageModal.addEventListener('click', (event) => {
+                    if (event.target === fullscreenImageModal) { // Check if the click was directly on the modal background
+                        fullscreenImageModal.classList.remove('show');
+                    }
+                });
+            }
+
+            // --- Project Card GitHub Link Handling ---
+            const projectCards = document.querySelectorAll('#projects .project-card'); // Select all project cards
+
+            projectCards.forEach(card => {
+                const viewDetailsButton = card.querySelector('.view-project-details');
+                if (viewDetailsButton) {
+                    viewDetailsButton.addEventListener('click', (event) => {
+                        event.stopPropagation(); // Prevent card click event if button has its own behavior
+                        const githubUrl = card.dataset.githubUrl;
+                        if (githubUrl && githubUrl !== 'https://github.com/pallu6753') { // Check if it's a valid, non-placeholder URL
+                            window.open(githubUrl, '_blank');
+                        } else {
+                            // If no specific GitHub URL or if it's the placeholder, show a message
+                            imageClickMessageBox.textContent = 'GitHub link not available or placeholder. Please check back later!';
+                            imageClickMessageBox.classList.add('show');
+                            setTimeout(() => {
+                                imageClickMessageBox.classList.remove('show');
+                            }, 3000);
+                        }
+                    });
+                }
+            });
+
+            // --- Live Demo Button (Projects to AI Tools) ---
+            const liveDemoButtons = document.querySelectorAll('.live-demo-button');
+            liveDemoButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent default link behavior
+                    const targetToolId = event.target.dataset.targetToolId;
+                    if (targetToolId) {
+                        const targetElement = document.getElementById(targetToolId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        } else {
+                            imageClickMessageBox.textContent = `Live demo for '${targetToolId}' not found.`;
+                            imageClickMessageBox.classList.add('show');
+                            setTimeout(() => {
+                                imageClickMessageBox.classList.remove('show');
+                            }, 3000);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
